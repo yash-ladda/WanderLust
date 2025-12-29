@@ -64,7 +64,7 @@ body {
 
 /* Cards */
 
-.card {
+.listing-card {
     border: none !important;
     margin-bottom: 2rem;
 }
@@ -115,6 +115,12 @@ body {
 
 .delete-btn {
     background-color: rgb(9, 30, 9);
+}
+
+.review-btn {
+    background-color: rgb(251, 24, 24);
+    color: white;
+    border: none;
 }
 
 .show-card {
