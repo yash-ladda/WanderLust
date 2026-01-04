@@ -97,7 +97,7 @@ body {
     background-color: rgb(255, 255, 255);
 }
 
-/* Add & edit & delete buttons */
+/* Add & edit buttons */
 .add-btn,
 .edit-btn{
     background-color: rgb(217, 24, 24) !important;
