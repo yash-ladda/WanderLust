@@ -21,7 +21,7 @@
                         </p>
 
                         <p class="card-text">
-                            &#8377; <%= listing.price.toLocaleString("en-IN") %>
+                            &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
                         </p>
 
                         <p class="card-text">
@@ -32,12 +32,9 @@
                             <%= listing.country %>
                         </p>
 
-                        </p>
-                        </p>
                     </div>
                 </div>
 
-                <br>
 
                 <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
                     <div class="btns">
@@ -48,6 +45,7 @@
                             <button class="delete btn btn-dark delete-btn offset-4">Delete</button>
                         </form>
                     </div>
+                    <br>
                     <hr>
                     <% } %>
 
@@ -86,11 +84,11 @@
                                     </div>
                                     <button class="btn btn-outline-dark review-btn mt-3">Submit</button>
                                 </form>
+                                <hr>
                                 <% } %>
-                                    
 
                                     <% if(listing.reviews.length) { %>
-                                        <hr>
+                                
                                         <h4>All reviews</h4>
                                         <p class="mb-4 offset-4">
                                             <strong>

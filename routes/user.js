@@ -17,6 +17,12 @@ const authMiddleware = passport.authenticate(
     { failureRedirect: "/login", failureFlash: true }
 );
 
+//OTP verification form render & OTP verification post route
+router
+    .route("/verify-otp")
+    .get(userController.renderOTPverifyForm)
+    .post(wrapAsync(userController.verify_otp));
+
 //Log In Form render  & Log In post route
 router
     .route("/login")

@@ -9,6 +9,18 @@ const userSchema = new Schema({
         required: true,
     },
     // username and passward will be defined by default by the passport-local-mongoose, no need to define them
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    otp: {
+        type: String,
+        default: undefined,
+    },
+    otpExpires: {
+        type: Date,
+        default: undefined,
+    }
 });
 
 userSchema.plugin(passportLocalMongoose);

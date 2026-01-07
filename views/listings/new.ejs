@@ -1,4 +1,5 @@
 <% layout("/layouts/boilerplate") %>
+
 <body>
     <div class="row mt-3">
         <div class="col-8 offset-2">
@@ -26,7 +27,7 @@
         <div class="row">
             <div class="mb-3 col-md-4">
                 <label for="price" class="form-label">Price</label>
-                <input type="number" name="listing[price]" class="form-control border border-2 border-secondary rounded-2" placeholder=&#8377;1,200 required>
+                <input type="number" name="listing[price]" class="form-control border border-2 border-secondary rounded-2" placeholder=&#8377;7,200 required>
                 <div class="invalid-feedback">Please Enter a Valid Price!</div>
             </div>
             
@@ -34,6 +35,7 @@
                 <label for="country" class="form-label">Country</label>
                 <input type="text" name="listing[country]" class="form-control border border-2 border-secondary rounded-2" placeholder="India" required>
                 <div class="invalid-feedback">Please Enter the Country name!</div>
+            </div>
         </div>
 
         <div class="mb-3">
@@ -45,12 +47,11 @@
         <div>
             <br>
         </div>
-        <!-- <br> -->
         <br>
         <br>
-        <!-- <br>
-        <br> -->
+
     </form>
     </div>
     </div>
+    <script src="/js/script.js"></script>
 </body>
