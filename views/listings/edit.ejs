@@ -18,10 +18,15 @@
             <textarea name="listing[description]" class="form-control border border-2 border-secondary rounded-2" required><%=listing.description%></textarea>
             <div class="invalid-feedback">Please Enter a Short Description!</div>
         </div>
+
+        <div class="mb-3">
+            Original Listing Image <br>
+            <img src="<%= originalImgUrl %>" alt="Original Listing Image" class="w-25">
+        </div>
         
         <div class="mb-3">
             <label for="image" class="form-label">Upload Listing Image</label>
-            <input type="file" name="listing[image]" class="form-control border border-2 border-secondary rounded-2" value="<%= listing.image %>" required>
+            <input type="file" name="listing[image]" class="form-control border border-2 border-secondary rounded-2" value="<%= listing.image %>">
         </div>
 
         <div class="row">

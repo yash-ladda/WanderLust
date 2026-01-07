@@ -41,16 +41,39 @@ module.exports.showListing = async (req, res) => {
 };
 
 //Create route
-module.exports.createListing = async (req, res, next) => {
-    let url = req.file.path;
-    let filename = req.file.filename;
+module.exports.createListing = async (req, res) => {
+    const url = req.file.path;
+    const filename = req.file.filename;
+
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
-    newListing.image = {url, filename};
+    newListing.image = { url, filename };
+
+    // 🔹 Forward geocoding
+    const location = `${newListing.location}, ${newListing.country}`;
+
+    const geoRes = await fetch(
+        `https://api.maptiler.com/geocoding/${encodeURIComponent(location)}.json?key=${process.env.MAP_API_KEY}`
+    );
+
+    const geoData = await geoRes.json();
+
+    if (geoData.features.length) {
+        const [lng, ltd] = geoData.features[0].center;
+
+        newListing.co_ordinates = {
+            lng,
+            ltd
+        };
+    }
+
     await newListing.save();
-    req.flash("success", "New Listing Created! ");
-    res.redirect("/listings"); 
+
+    req.flash("success", "New Listing Created!");
+    res.redirect("/listings");
 };
+
+
 
 //Edit route
 module.exports.renderEditForm = async (req, res) => {
@@ -60,12 +83,16 @@ module.exports.renderEditForm = async (req, res) => {
         req.flash("error", "Listing Does Not Exist! ");
         return res.redirect("/listings");
     }
-    res.render("./listings/edit", {listing});
+    const originalImgUrl = listing.image.url.replace(
+        "/upload/",
+        "/upload/w_400/"
+    );
+    res.render("./listings/edit", {listing, originalImgUrl});
 };
 
 //Update route
 module.exports.updateListing = async (req, res) => {
-    let {id} = req.params; 
+    const { id } = req.params;
 
     // 1️⃣ update text fields
     let listing = await Listing.findByIdAndUpdate(
@@ -73,19 +100,39 @@ module.exports.updateListing = async (req, res) => {
         { ...req.body.listing },
         { new: true }
     );
-            
-    // 2️⃣ if user uploaded new image → update image
+
+    // 2️⃣ if location or country changed → re-geocode
+    if (req.body.listing.location || req.body.listing.country) {
+        const location = `${listing.location}, ${listing.country}`;
+
+        const geoRes = await fetch(
+            `https://api.maptiler.com/geocoding/${encodeURIComponent(location)}.json?key=${process.env.MAP_API_KEY}`
+        );
+
+        const geoData = await geoRes.json();
+
+        if (geoData.features.length) {
+            const [lng, ltd] = geoData.features[0].center;
+
+            listing.co_ordinates = { lng, ltd };
+        }
+    }
+
+    // 3️⃣ if new image uploaded → update image
     if (req.file) {
         listing.image = {
             url: req.file.path,
             filename: req.file.filename,
         };
-        await listing.save();
     }
-    
-    req.flash("success", "Listing Updated! ");
+
+    await listing.save();
+
+    req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 };
+
+
 
 //Destroy route
 module.exports.destroyListing = async (req, res) => {
