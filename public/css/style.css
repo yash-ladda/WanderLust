@@ -102,6 +102,7 @@ body {
 .edit-btn{
     background-color: rgb(217, 24, 24) !important;
     border: none !important;
+    color: white;
 }
 
 /* Show page */

@@ -17,3 +17,12 @@
         }, false)
     })
 })()
+
+let logout = document.querySelector("#logout");
+
+logout.addEventListener("click", (e) => {
+    const confirmLogOut = confirm("Are you sure, you want to Log Out? ");
+    if(!confirmLogOut) {
+        e.preventDefault();
+    }
+});
