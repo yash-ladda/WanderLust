@@ -69,19 +69,18 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.get("/demouser", async (req, res) => {
-//     let fakeUser = new User({
-//         email: "randomuser@gmail.com",
-//         username: "randomuser"
-//     });
-
-//     let registeredUser = await User.register(fakeUser, "helloworld");  //pass user and password
-//     res.send(registeredUser);
-// });
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+
+app.get("/privacy", (req, res) => {
+    res.render("./listings/privacy");
+});
+
+app.get("/terms", (req, res) => {
+    res.render("./listings/terms");
+});
 
 app.all(/.*/, (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));

@@ -2,8 +2,43 @@ const Listing = require("../models/listing");
 
 //Index route
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("./listings/index.ejs", { allListings });
+    const {category, sort} = req.query;
+    let query = {};
+
+    //handling category
+    if(category) {
+        query.category = category;
+    }
+
+    //creating database query
+    let listingQuery = Listing.find(query);
+
+    //handling sorting
+    if(sort) {
+        switch(sort) {
+            case 'price_low':
+                listingQuery = listingQuery.sort({price: 1}); //Asc
+                break;
+            case 'price_high':
+                listingQuery = listingQuery.sort({price: -1}); //Desc
+                break;
+            case 'date_new':
+                listingQuery = listingQuery.sort({createdAt: -1}); //Newset first
+                break;
+            case 'date_old':
+                listingQuery = listingQuery.sort({createdAt: 1}); //Oldest first
+                break;
+            default:
+                listingQuery = listingQuery.sort({createdAt: 1}); //Default
+        }
+    }
+    else {
+        //default sort if nothing selected
+        listingQuery = listingQuery.sort({ createdAt: 1 });
+    }
+
+    const allListings = await listingQuery;
+    res.render("./listings/index", {allListings});
 };
 
 //New route
@@ -131,8 +166,6 @@ module.exports.updateListing = async (req, res) => {
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 };
-
-
 
 //Destroy route
 module.exports.destroyListing = async (req, res) => {

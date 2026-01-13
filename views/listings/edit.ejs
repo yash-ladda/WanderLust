@@ -1,56 +1,103 @@
 <% layout("/layouts/boilerplate") %>
 
     <div class="row mt-3">
-        <div class="col-8 offset-2">
+        <div class="col-11 col-md-9 col-lg-8 mx-auto">
 
-        <h3>Edit your Listing</h3>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
-        
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" name="listing[title]" class="form-control border border-2 border-secondary rounded-2" value="<%= listing.title %>" required>
-            <div class="invalid-feedback">Please Enter a Catchy Title!</div>
-        </div>
-        
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" class="form-control border border-2 border-secondary rounded-2" required><%=listing.description%></textarea>
-            <div class="invalid-feedback">Please Enter a Short Description!</div>
-        </div>
+            <h3 class="text-center mb-4">Edit your Listing</h3>
 
-        <div class="mb-3">
-            Original Listing Image <br>
-            <img src="<%= originalImgUrl %>" alt="Original Listing Image" class="w-25">
-        </div>
-        
-        <div class="mb-3">
-            <label for="image" class="form-label">Upload Listing Image</label>
-            <input type="file" name="listing[image]" class="form-control border border-2 border-secondary rounded-2" value="<%= listing.image %>">
-        </div>
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate
+                        class="needs-validation" enctype="multipart/form-data">
 
-        <div class="row">
-        <div class="mb-3 col-md-4">
-            <label for="price" class="form-label">Price</label>
-            <input type="number" name="listing[price]" class="form-control border border-2 border-secondary rounded-2" value="<%= listing.price %>" required>
-            <div class="invalid-feedback">Please Enter a Valid Price!</div>
-        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" name="listing[title]"
+                                class="form-control border border-2 border-secondary rounded-2"
+                                value="<%= listing.title %>" required>
+                            <div class="invalid-feedback">Please Enter a Catchy Title!</div>
+                        </div>
 
-        <div class="mb-3 col-md-8">
-            <label for="country" class="form-label">Country</label>
-            <input type="text" name="listing[country]" class="form-control border border-2 border-secondary rounded-2" value="<%= listing.country %>" required>
-            <div class="invalid-feedback">Please Enter the Country name!</div>
-        </div>
-        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea name="listing[description]"
+                                class="form-control border border-2 border-secondary rounded-2"
+                                required><%=listing.description%></textarea>
+                            <div class="invalid-feedback">Please Enter a Short Description!</div>
+                        </div>
 
-        <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input type="text" name="listing[location]" class="form-control border border-2 border-secondary rounded-2" value="<%= listing.location %>" required>
-            <div class="invalid-feedback">Please Enter the Location!</div>
-        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Original Listing Image</label>
+                            <br>
+                            <img src="<%= originalImgUrl %>" alt="Original Listing Image" class="img-thumbnail rounded"
+                                style="height: 200px; object-fit: cover;">
+                        </div>
 
-        <button class="btn btn-dark edit-btn mt-3">Edit</button>
-        <br><br>
-    </form>
-    </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Upload New Image</label>
+                            <input type="file" name="listing[image]"
+                                class="form-control border border-2 border-secondary rounded-2">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select name="listing[category]"
+                                class="form-select border border-2 border-secondary rounded-2" required>
+                                <option value="whole_place" <%=listing.category==='whole_place' ? 'selected' : '' %>
+                                    >Whole Place</option>
+                                <option value="cozy_rooms" <%=listing.category==='cozy_rooms' ? 'selected' : '' %>>Cozy
+                                    Rooms</option>
+                                <option value="urban_stays" <%=listing.category==='urban_stays' ? 'selected' : '' %>
+                                    >Urban Stays</option>
+                                <option value="beach_vibes" <%=listing.category==='beach_vibes' ? 'selected' : '' %>
+                                    >Beach Vibes</option>
+                                <option value="mountain_escapes" <%=listing.category==='mountain_escapes' ? 'selected'
+                                    : '' %>>Mountain Escapes</option>
+                                <option value="nature_nooks" <%=listing.category==='nature_nooks' ? 'selected' : '' %>
+                                    >Nature Nooks</option>
+                                <option value="poolside_stays" <%=listing.category==='poolside_stays' ? 'selected' : ''
+                                    %>>Poolside Stays</option>
+                                <option value="eco_retreats" <%=listing.category==='eco_retreats' ? 'selected' : '' %>
+                                    >Eco Retreats</option>
+                                <option value="family_favs" <%=listing.category==='family_favs' ? 'selected' : '' %>
+                                    >Family Favs</option>
+                                <option value="other_stays" <%=listing.category==='other_stays' ? 'selected' : '' %>
+                                    >Other Stays</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a category!</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" name="listing[price]"
+                                    class="form-control border border-2 border-secondary rounded-2"
+                                    value="<%= listing.price %>" required>
+                                <div class="invalid-feedback">Please Enter a Valid Price!</div>
+                            </div>
+
+                            <div class="mb-3 col-md-8">
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" name="listing[country]"
+                                    class="form-control border border-2 border-secondary rounded-2"
+                                    value="<%= listing.country %>" required>
+                                <div class="invalid-feedback">Please Enter the Country name!</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" name="listing[location]"
+                                class="form-control border border-2 border-secondary rounded-2"
+                                value="<%= listing.location %>" required>
+                            <div class="invalid-feedback">Please Enter the Location!</div>
+                        </div>
+
+                        <button class="btn btn-dark edit-btn mt-3 w-100">Edit Listing</button>
+                        <br><br>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="/js/script.js"></script>

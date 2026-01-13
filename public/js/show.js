@@ -1,4 +1,5 @@
 let forms = document.querySelectorAll(".delete-form");
+console.log(forms);
 
 for(let form of forms) {
     form.addEventListener("submit", (e) => {

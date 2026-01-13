@@ -67,6 +67,8 @@ body {
 .listing-card {
     border: none !important;
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 600px;
 }
 
 .card-img-top {
@@ -103,19 +105,38 @@ body {
     background-color: rgb(217, 24, 24) !important;
     border: none !important;
     color: white;
+    width: 80px;
+    min-width: 80px;
+}
+
+.add-btn:hover,
+.edit-btn:hover {
+    background-color: black !important;
 }
 
 /* Show page */
 .show-img {
-    height: 30vh;
+    height: 300px;
+    object-fit: cover;
 }
 
 .btns {
     display: flex;
 }
 
+.review-delete {
+    margin-left: 0;
+}
+
 .delete-btn {
     background-color: rgb(9, 30, 9);
+    width: 80px;
+    margin-left: 10px;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: rgb(217, 24, 24) !important; 
 }
 
 .verify-btn {
@@ -132,4 +153,12 @@ body {
 .show-card {
     padding-left: 0;
     padding-right: 0;
+}
+
+.review {
+    padding: 14px;
+}
+
+.socials {
+    color: black;
 }
