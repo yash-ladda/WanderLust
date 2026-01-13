@@ -4,8 +4,8 @@
 
 ## 🚀 Features
 
-* **Browse & Search:** See listings with photos, prices, and locations.
-* **Categories & Filters:** Easily find "Beach Vibes," "Mountains," or "Poolside" stays.
+* **Browse:** See listings with photos, prices, and locations.
+* **Categories & Filters:** Easily find "Beach Vibes," "Mountains" and similar type of stays.
 * **Map View:** See exactly where a property is located on an interactive map.
 * **User Accounts:** Sign up to create your own listings or write reviews.
 * **Reviews:** Read what others have said about a place or leave your own rating.
