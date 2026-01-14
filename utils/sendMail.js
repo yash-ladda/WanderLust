@@ -31,7 +31,7 @@ module.exports.sendOTP = async (toEmail, otp) => {
     // Sender address hardcode kar raha hu taaki Brevo login ID (a0090...) user ko na dikhe
     // "WanderLust Support <no-reply@wanderlust.com>" dikhega
     await transporter.sendMail({
-        from: `"WanderLust Support" <${process.env.EMAIL}>`,
+        from: `"WanderLust Support" <yashladda7777@gmail.com>`,
         to: toEmail,
         subject: "Verify Your Email Address - WanderLust",
         html: `
