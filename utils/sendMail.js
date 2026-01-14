@@ -1,29 +1,13 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,              // Port 587 is best for Render
-    secure: false,          // False for TLS
+    host: "smtp-relay.brevo.com", // Brevo ka host
+    port: 587,
+    secure: false, // TLS ke liye false
     auth: {
         user: process.env.EMAIL,
         pass: process.env.EMAIL_PASS,
     },
-    // 🔥 CRITICAL FIX FOR RENDER TIMEOUTS 🔥
-    family: 4,              // Forces IPv4 (Fixes ETIMEDOUT issues)
-    logger: true,           // Logs connection info
-    debug: true,            // Shows debug info in logs
-    connectionTimeout: 10000, // 10 seconds timeout
-    greetingTimeout: 5000,    // 5 seconds greeting timeout
-    socketTimeout: 10000      // 10 seconds socket timeout
-});
-
-// Verify connection on startup
-transporter.verify((error, success) => {
-    if (error) {
-        console.log("❌ Transporter Verification Error:", error);
-    } else {
-        console.log("✅ Server is ready to take our messages");
-    }
 });
 
 module.exports.sendOTP = async (toEmail, otp) => {
