@@ -1,41 +1,47 @@
 const nodemailer = require("nodemailer");
 
-// Updated Transporter Configuration
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465, // Use Port 465 for Secure SSL connection
-    secure: true, // true for 465, false for other ports
+    port: 587,              // <--- CHANGED: 465 ki jagah 587
+    secure: false,          // <--- CHANGED: true ki jagah false (TLS ke liye)
     auth: {
         user: process.env.EMAIL,
         pass: process.env.EMAIL_PASS,
     },
 });
 
+// Verification Log (Taaki pata chale connection bana ya nahi)
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("Error connecting to email service:", error);
+    } else {
+        console.log("✅ Email Server is ready to take messages");
+    }
+});
+
 module.exports.sendOTP = async (toEmail, otp) => {
-    // Debugging: Check if Env vars are loaded (Don't log the password!)
     if (!process.env.EMAIL || !process.env.EMAIL_PASS) {
         throw new Error("EMAIL or EMAIL_PASS environment variables are missing!");
     }
 
     await transporter.sendMail({
-        from: `"WanderLust Support" <${process.env.EMAIL}>`, // Thoda professional naam add kiya
+        from: `"WanderLust Support" <${process.env.EMAIL}>`,
         to: toEmail,
         subject: "Verify Your Email Address - WanderLust",
-        text: `
-            Welcome to WanderLust 👋
-
-            Your One-Time Password (OTP) is:
-
-            👉 ${otp}
-
-            This OTP is valid for the next 10 minutes.
-            Please do not share this code with anyone.
-
-            If you did not create this account, you can safely ignore this email.
-
-            Thanks,
-            Team WanderLust
-        `,
-        // HTML body bhi add kar sakte ho agar chaho, par text is fine for now
+        text: `Your OTP is: ${otp}`,
+        // HTML body optional
+        html: `
+            <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                <div style="margin:50px auto;width:70%;padding:20px 0">
+                    <div style="border-bottom:1px solid #eee">
+                        <a href="" style="font-size:1.4em;color: #fe424d;text-decoration:none;font-weight:600">WanderLust</a>
+                    </div>
+                    <p style="font-size:1.1em">Hi,</p>
+                    <p>Use the following OTP to complete your Sign Up procedures. OTP is valid for 10 minutes</p>
+                    <h2 style="background: #fe424d;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
+                    <p style="font-size:0.9em;">Regards,<br />Team WanderLust</p>
+                </div>
+            </div>
+        `
     });
 };
