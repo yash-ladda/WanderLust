@@ -1,7 +1,10 @@
 const nodemailer = require("nodemailer");
 
+// Updated Transporter Configuration
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465, // Use Port 465 for Secure SSL connection
+    secure: true, // true for 465, false for other ports
     auth: {
         user: process.env.EMAIL,
         pass: process.env.EMAIL_PASS,
@@ -9,10 +12,15 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports.sendOTP = async (toEmail, otp) => {
+    // Debugging: Check if Env vars are loaded (Don't log the password!)
+    if (!process.env.EMAIL || !process.env.EMAIL_PASS) {
+        throw new Error("EMAIL or EMAIL_PASS environment variables are missing!");
+    }
+
     await transporter.sendMail({
-        from: process.env.EMAIL,
+        from: `"WanderLust Support" <${process.env.EMAIL}>`, // Thoda professional naam add kiya
         to: toEmail,
-        subject: "Verify Your Email Address",
+        subject: "Verify Your Email Address - WanderLust",
         text: `
             Welcome to WanderLust 👋
 
@@ -27,6 +35,7 @@ module.exports.sendOTP = async (toEmail, otp) => {
 
             Thanks,
             Team WanderLust
-`
-    })
-}
+        `,
+        // HTML body bhi add kar sakte ho agar chaho, par text is fine for now
+    });
+};
