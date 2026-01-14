@@ -1,18 +1,25 @@
 <% layout("/layouts/boilerplate") -%>
 
     <style>
-        /* General Filter Container */
+        /* --- General Filter Container --- */
         #filters {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
         }
 
+        /* --- Individual Filter Item --- */
         .filter {
             text-align: center;
             margin-right: 2rem;
             margin-top: 2rem;
             opacity: 0.7;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+            /* Ensure a minimum width for touch targets */
         }
 
         .filter:hover {
@@ -26,18 +33,59 @@
             color: inherit;
         }
 
-        #filters-collapse {
-            display: flex;
-            flex-wrap: wrap;
+        .filter i {
+            font-size: 1.2rem;
+            /* Make icons slightly larger */
+            margin-bottom: 0.5rem;
         }
 
+        .filter p {
+            font-size: 0.8rem;
+            /* Keep text compact */
+            margin-bottom: 0;
+        }
+
+        /* --- Controls Container (Right Side) --- */
         .tax-sort-control {
             display: flex;
             align-items: center;
             margin-left: auto;
+            /* Pushes sort/tax to the right */
         }
 
-        /* Tax Toggle Styling */
+        /* --- Sort Dropdown Styling --- */
+        .sort-group {
+            margin-left: 1.5rem;
+            height: 3rem;
+            min-width: 250px;
+        }
+
+        .sort-by {
+            border: 1px solid rgb(217, 24, 24) !important;
+            background-color: transparent;
+        }
+
+        /* Rounded corners for the "Sort By" label */
+        .input-group-text.sort-by {
+            border-top-left-radius: 1rem !important;
+            border-bottom-left-radius: 1rem !important;
+            border-right: none;
+        }
+
+        /* Rounded corners for the Dropdown */
+        .form-select.sort-by {
+            border-top-right-radius: 1rem !important;
+            border-bottom-right-radius: 1rem !important;
+            border-left: none;
+            cursor: pointer;
+        }
+
+        .form-select.sort-by:focus {
+            box-shadow: none;
+            border-color: rgb(217, 24, 24) !important;
+        }
+
+        /* --- Tax Toggle Styling --- */
         .tax-toggle {
             border: 1px solid rgb(217, 24, 24);
             border-radius: 1rem;
@@ -47,75 +95,75 @@
             display: flex;
             align-items: center;
             white-space: nowrap;
-        }
-
-        .show-filters {
-            border: 1px solid rgb(217, 24, 24);
-            border-radius: 1rem;
-            height: 3rem;
-            color: black !important;
-        }
-
-        .show-filters:hover {
-            color: white !important;
+            transition: 0.3s;
         }
 
         .tax-toggle:hover {
             background-color: rgb(217, 24, 24);
             color: white;
-            /* Changed text to white on hover for readability */
             cursor: pointer;
         }
 
-        /* Sort Group Container */
-        .sort-group {
-            margin-left: 1.5rem;
+        /* --- Mobile Toggle Button --- */
+        .filter-toggle-btn {
+            display: none;
+            /* Hidden on Desktop */
+            border: 1px solid rgb(217, 24, 24);
+            border-radius: 1rem;
             height: 3rem;
-            min-width: 250px;
+            color: black;
+            width: 100%;
+            /* Full width on mobile */
+            background-color: white;
+            /* Explicit background */
         }
 
-        /* --- MOVED THIS OUTSIDE THE MEDIA QUERY --- */
-        /* Custom Red Border Styling for Sort By */
-        .sort-by {
-            border: 1px solid rgb(217, 24, 24) !important;
-            /* !important helps override Bootstrap defaults */
-            background-color: transparent;
+        .filter-toggle-btn:hover {
+            background-color: rgb(217, 24, 24);
+            color: white;
         }
 
-        /* Rounding the left side of the label */
-        .input-group-text.sort-by {
-            border-top-left-radius: 1rem !important;
-            border-bottom-left-radius: 1rem !important;
-            border-right: none;
-            /* Remove line between label and select */
-        }
-
-        /* Rounding the right side of the dropdown */
-        .form-select.sort-by {
-            border-top-right-radius: 1rem !important;
-            border-bottom-right-radius: 1rem !important;
-            border-left: none;
-        }
-
-        /* ------------------------------------------- */
-
-        /* Mobile Adjustments */
+        /* --- Mobile Responsive Rules --- */
         @media (max-width: 992px) {
             #filters {
                 flex-direction: column;
                 align-items: stretch;
             }
 
+            /* --- UPDATED: Mobile Filter Grid Layout --- */
             #filters-collapse {
                 display: none;
-                justify-content: center;
-                margin-bottom: 1rem;
+                /* Use Grid layout for cleaner alignment on mobile */
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                /* Auto-fit columns */
+                gap: 10px;
+                /* Space between grid items */
+                width: 100%;
+                margin-bottom: 1.5rem;
+                padding: 10px 0;
             }
 
+            /* Override the flex display when hidden */
+            #filters-collapse:not(.show) {
+                display: none;
+            }
+
+            /* When shown, ensure it uses grid */
             #filters-collapse.show {
-                display: flex;
+                display: grid;
             }
 
+            /* Adjust individual filter items for mobile grid */
+            .filter {
+                margin: 0;
+                /* Remove old margins */
+                margin-top: 1rem;
+                width: 100%;
+                /* Take full width of grid cell */
+            }
+
+            /* Stack Controls on Mobile */
             .tax-sort-control {
                 margin-left: 0;
                 flex-direction: column;
@@ -128,31 +176,22 @@
                 margin-left: 0;
                 width: 100%;
                 justify-content: center;
+                min-width: unset;
+                /* Allow shrinking */
             }
 
+            /* Show Toggle Button on Mobile */
             .filter-toggle-btn {
-                display: block !important;
-                width: 100%;
+                display: block;
                 margin-bottom: 1rem;
-                border: 1px solid rgb(217, 24, 24);
-                /* Added red border to button too */
-                color: rgb(217, 24, 24);
-            }
-
-            .filter-toggle-btn:hover {
-                background-color: rgb(217, 24, 24);
-                color: white;
             }
         }
 
-        /* Desktop Adjustments */
+        /* Desktop: Always show filters */
         @media (min-width: 993px) {
-            .filter-toggle-btn {
-                display: none !important;
-            }
-
             #filters-collapse {
                 display: flex !important;
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -160,7 +199,7 @@
     <div class="container-fluid mt-3">
         <div id="filters">
 
-            <button class="btn show-filters filter-toggle-btn" type="button" data-bs-toggle="collapse"
+            <button class="btn filter-toggle-btn" type="button" data-bs-toggle="collapse"
                 data-bs-target="#filters-collapse" aria-expanded="false" aria-controls="filters-collapse">
                 <i class="fa-solid fa-sliders me-2"></i> Show Filters
             </button>
@@ -233,8 +272,8 @@
                 <div class="input-group sort-group">
                     <label class="input-group-text bg-transparent sort-by" for="sortSelect">Sort By</label>
                     <select class="form-select sort-by" id="sortSelect" name="sort">
-                        <option value="date_old" selected>Date Added: Oldest to Newest</option>
-                        <option value="date_new">Date Added: Newest to Oldest</option>
+                        <option value="date_old" selected>Date: Oldest to Newest</option>
+                        <option value="date_new">Date: Newest to Oldest</option>
                         <option value="price_high">Price: High to Low</option>
                         <option value="price_low">Price: Low to High</option>
                     </select>
@@ -288,29 +327,36 @@
     </div>
 
     <script>
+        // 1. Tax Switch Logic
         const taxSwitch = document.getElementById("flexSwitchCheckDefault");
-        taxSwitch.addEventListener("click", () => {
-            let taxInfo = document.getElementsByClassName("price-after-tax");
-            let priceInfo = document.getElementsByClassName("price-before-tax");
-            for (info of taxInfo) {
-                if (info.style.display != "inline") {
-                    info.style.display = "inline";
-                } else {
-                    info.style.display = "none";
-                }
-            }
-            for (info of priceInfo) {
-                if (info.style.display != "none") {
-                    info.style.display = "none";
-                } else {
-                    info.style.display = "inline";
-                }
-            }
-        });
 
-        // NEW: Sort By Logic
-            const sortSelect = document.getElementById("sortSelect");
+        if (taxSwitch) { // Safety check to avoid null error
+            taxSwitch.addEventListener("click", () => {
+                let taxInfo = document.getElementsByClassName("price-after-tax");
+                let priceInfo = document.getElementsByClassName("price-before-tax");
 
+                for (info of taxInfo) {
+                    if (info.style.display != "inline") {
+                        info.style.display = "inline";
+                    } else {
+                        info.style.display = "none";
+                    }
+                }
+
+                for (info of priceInfo) {
+                    if (info.style.display != "none") {
+                        info.style.display = "none";
+                    } else {
+                        info.style.display = "inline";
+                    }
+                }
+            });
+        }
+
+        // 2. Sort By Logic
+        const sortSelect = document.getElementById("sortSelect");
+
+        if (sortSelect) { // Safety check to avoid null error
             // Set the dropdown value based on current URL to keep it selected after reload
             const urlParams = new URLSearchParams(window.location.search);
             const currentSort = urlParams.get('sort');
@@ -328,4 +374,5 @@
                 // Reload the page with the new sort parameter
                 window.location.href = currentUrl.toString();
             });
+        }
     </script>
